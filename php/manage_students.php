@@ -1,5 +1,6 @@
 <?php
-require_once 'config.php';
+session_start();
+require_once __DIR__ . '/config.php';
 if (!isset($_SESSION['admin_id'])) { header('Location: admin_login.php'); exit(); }
 
 $msg = '';
