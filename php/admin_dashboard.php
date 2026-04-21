@@ -1,7 +1,7 @@
 <?php
-require_once 'config.php';
+session_start();
+require_once __DIR__ . '/config.php';
 if (!isset($_SESSION['admin_id'])) { header('Location: admin_login.php'); exit(); }
-
 $students = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM students"))['c'];
 $subjects = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM subjects"))['c'];
 $results  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM results"))['c'];
@@ -15,7 +15,6 @@ $results  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM re
 </head>
 <body>
 <div class="dashboard">
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="brand">
             <div style="font-size:2rem;">🎓</div>
@@ -29,8 +28,6 @@ $results  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM re
             <a href="admin_logout.php" style="margin-top:30px;"><span>🚪</span> Logout</a>
         </nav>
     </aside>
-
-    <!-- Main Content -->
     <main class="main-content">
         <div class="topbar">
             <h1>Dashboard</h1>
@@ -39,33 +36,20 @@ $results  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM re
                 <span><?= htmlspecialchars($_SESSION['admin_name']) ?></span>
             </div>
         </div>
-
-        <!-- Stats -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon blue">👨‍🎓</div>
-                <div class="stat-info">
-                    <h3><?= $students ?></h3>
-                    <p>Total Students</p>
-                </div>
+                <div class="stat-info"><h3><?= $students ?></h3><p>Total Students</p></div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon green">📚</div>
-                <div class="stat-info">
-                    <h3><?= $subjects ?></h3>
-                    <p>Total Subjects</p>
-                </div>
+                <div class="stat-info"><h3><?= $subjects ?></h3><p>Total Subjects</p></div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon orange">📋</div>
-                <div class="stat-info">
-                    <h3><?= $results ?></h3>
-                    <p>Results Entered</p>
-                </div>
+                <div class="stat-info"><h3><?= $results ?></h3><p>Results Entered</p></div>
             </div>
         </div>
-
-        <!-- Quick Links -->
         <div class="table-card">
             <h2>Quick Actions</h2>
             <div style="display:flex;gap:15px;flex-wrap:wrap;padding:10px 0;">
@@ -74,8 +58,6 @@ $results  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM re
                 <a href="manage_results.php" class="add-btn" style="background:linear-gradient(135deg,#e65100,#f57c00);">+ Add Result</a>
             </div>
         </div>
-
-        <!-- Recent Students -->
         <div class="table-card">
             <h2>Recent Students</h2>
             <table>
