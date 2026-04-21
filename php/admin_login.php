@@ -1,15 +1,13 @@
 <?php
-require_once 'config.php';
+session_start();
+require_once __DIR__ . '/config.php';
 $error = '';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = $_POST['password'];
-
     $result = mysqli_query($conn, "SELECT * FROM admin WHERE username='$username'");
     $admin = mysqli_fetch_assoc($result);
-
-    if ($admin && password_verify($password, $admin['password'])) {
+    if ($admin && $password === $admin['password']) {
         $_SESSION['admin_id'] = $admin['id'];
         $_SESSION['admin_name'] = $admin['username'];
         header('Location: admin_dashboard.php');
@@ -32,11 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="logo">👨‍💼</div>
         <h2>Admin Login</h2>
         <p>Sign in to manage student results</p>
-
         <?php if ($error): ?>
             <div class="error-msg"><?= $error ?></div>
         <?php endif; ?>
-
         <form method="POST">
             <div class="form-group">
                 <label>Username</label>
@@ -48,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit" class="submit-btn">Login →</button>
         </form>
-
         <div class="back-link">
             <a href="../index.php">← Back to Home</a>
         </div>
