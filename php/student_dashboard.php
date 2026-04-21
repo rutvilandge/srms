@@ -1,13 +1,12 @@
 <?php
-require_once 'config.php';
+session_start();
+require_once __DIR__ . '/config.php';
 if (!isset($_SESSION['student_id'])) { header('Location: student_login.php'); exit(); }
 
 $sid = (int)$_SESSION['student_id'];
 
-// Get student info
 $student = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM students WHERE id=$sid"));
 
-// Get results
 $results = mysqli_query($conn, "
     SELECT r.*, sub.subject_name, sub.subject_code, sub.max_marks
     FROM results r
@@ -41,16 +40,11 @@ elseif ($percentage >= 50) $overall_grade = 'C';
 <head><meta charset="UTF-8"><title>My Results - SRMS</title><link rel="stylesheet" href="../css/style.css"></head>
 <body>
 <div style="background:#f0f4f8;min-height:100vh;padding:30px 20px;">
-
-    <!-- Topbar -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;max-width:900px;margin-left:auto;margin-right:auto;">
         <h1 style="color:#1a237e;font-size:1.5rem;">🎓 My Academic Results</h1>
         <a href="student_logout.php" style="color:#c62828;text-decoration:none;font-size:0.9rem;">🚪 Logout</a>
     </div>
-
     <div style="max-width:900px;margin:0 auto;">
-
-    <!-- Student Header Card -->
     <div class="result-header">
         <div class="avatar-big">👨‍🎓</div>
         <div>
@@ -59,34 +53,15 @@ elseif ($percentage >= 50) $overall_grade = 'C';
             <span class="semester-tag">Semester <?= $student['semester'] ?></span>
         </div>
     </div>
-
-    <!-- Summary Cards -->
     <div class="summary-cards">
-        <div class="summary-card">
-            <h4><?= $total_marks ?>/<?= $total_max ?></h4>
-            <p>Total Marks</p>
-        </div>
-        <div class="summary-card">
-            <h4><?= $percentage ?>%</h4>
-            <p>Percentage</p>
-        </div>
-        <div class="summary-card">
-            <h4><?= $overall_grade ?></h4>
-            <p>Overall Grade</p>
-        </div>
-        <div class="summary-card">
-            <h4 class="pass"><?= $pass_count ?></h4>
-            <p>Subjects Passed</p>
-        </div>
+        <div class="summary-card"><h4><?= $total_marks ?>/<?= $total_max ?></h4><p>Total Marks</p></div>
+        <div class="summary-card"><h4><?= $percentage ?>%</h4><p>Percentage</p></div>
+        <div class="summary-card"><h4><?= $overall_grade ?></h4><p>Overall Grade</p></div>
+        <div class="summary-card"><h4 class="pass"><?= $pass_count ?></h4><p>Subjects Passed</p></div>
         <?php if ($fail_count > 0): ?>
-        <div class="summary-card">
-            <h4 class="fail"><?= $fail_count ?></h4>
-            <p>Subjects Failed</p>
-        </div>
+        <div class="summary-card"><h4 class="fail"><?= $fail_count ?></h4><p>Subjects Failed</p></div>
         <?php endif; ?>
     </div>
-
-    <!-- Result Table -->
     <div class="table-card">
         <h2>Subject-wise Result</h2>
         <?php if (empty($rows)): ?>
@@ -115,16 +90,13 @@ elseif ($percentage >= 50) $overall_grade = 'C';
             <?php endforeach; ?>
             </tbody>
         </table>
-
-        <!-- Grading Key -->
         <div style="margin-top:25px;padding:15px;background:#f9f9ff;border-radius:8px;font-size:0.85rem;color:#555;">
             <strong>Grading Scale:</strong> &nbsp;
             O (Outstanding ≥90%) &nbsp;|&nbsp; A (≥80%) &nbsp;|&nbsp; B+ (≥70%) &nbsp;|&nbsp; B (≥60%) &nbsp;|&nbsp; C (≥50%) &nbsp;|&nbsp; F (Below 50%)
         </div>
         <?php endif; ?>
     </div>
-
-    </div><!-- end max-width -->
+    </div>
 </div>
 </body>
 </html>
