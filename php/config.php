@@ -1,9 +1,9 @@
 <?php
-$host     = 'mysql.railway.internal';
+$host     = 'shinkansen.proxy.rlwy.net';
 $username = 'root';
 $password = 'XfJQFQOEsPfqDqbWjcBzsTXNgXMIVjlj';
 $database = 'railway';
-$port     = 3306;
+$port     = 21818;
 
 $conn = mysqli_connect($host, $username, $password, $database, $port);
 
